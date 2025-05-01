@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solve Tracker</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="bg-off-white">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+            <div class="container">
+                <a class="navbar-brand fw-bold fs-4 text-success" href='@(@User.Identity.IsAuthenticated ? Url.Action("Index", "Dashboard") : Url.Action("Index", "Login"))'>SolveTracker</a>
+                <div class="d-flex">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form asp-controller="Login" asp-action="Logout" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-outline-success me-2">Logout</button>
+                        </form>
+                        <button class="btn btn-success">@User.Identity.Name</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-outline-success me-2" onclick="window.location.href='@Url.Action("Index", "Login")'">Login</button>
+                        <button class="btn btn-success" onclick="window.location.href='@Url.Action("Index", "Registration")'">Register</button>
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="container mt-5">
+        @RenderBody()
+    </main>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

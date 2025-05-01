@@ -1,0 +1,32 @@
+## Build results
+bin/
+obj/
+out/
+
+## Visual Studio files
+.vs/
+*.user
+*.suo
+
+## ASP.NET Core files
+SolveTracker.Web/wwwroot/bin/
+SolveTracker.Web/wwwroot/lib/
+node_modules/
+dist/
+
+## OS files
+.DS_Store
+Thumbs.db
+
+## Logs and temp
+*.log
+*.tmp
+
+## Rider
+.idea/
+
+## User secrets
+secrets.json
+
+## Others
+*.swp

@@ -1,0 +1,92 @@
+﻿@model SolveTracker.ViewModels.Dashboard.ProgrammerViewModel;
+
+<div id="dashboardContainer" class="w-75 mx-auto">
+    <div class="greeting-section card p-4 my-3 rounded shadow-sm border-0">
+        <h3>Good afternoon, @Model.DisplayName!</h3>
+        <div class="text-secondary">Welcome back to your SolveTracker dashboard.</div>
+    </div>
+    
+    <div class="solve-stats-section card p-4 my-3 rounded shadow-sm border-0">
+        <div>
+            <button class="btn btn-success" onclick="window.location.href='@Url.Action("Index", "DailyLog")'">Add Log</button>
+            <button class="btn btn-success" onclick="window.location.href='@Url.Action("Index", "Notification")'">Notification</button>
+        </div>
+    </div>
+
+    <div class="solve-stats-section card p-4 my-3 rounded shadow-sm border-0">
+        <div class="row text-center">
+            <div class="col-md-4 border-end">
+                <span class="fw-bold fs-2 text-success">@Model.DailySolveCount</span>
+                <div class="text-secondary">problems solved today.</div>
+            </div>
+            <div class="col-md-4 border-end">
+                <span class="fw-bold fs-2 text-success">@Model.WeeklySolveCount</span>
+                <div class="text-secondary">problems solved in the last week.</div>
+            </div>
+            <div class="col-md-4">
+                <span class="fw-bold fs-2 text-success">@Model.TotalSolveCount</span>
+                <div class="text-secondary">problems solved in total!</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="summary-section card p-4 my-3 rounded shadow-sm border-0">
+        <div class="row">
+            <div class="daily-solve-summary-section col-md-6 border-end">
+                <h5>Daily Solve Summary</h5>
+                <div class="border-bottom mb-3"></div>
+                <div class="text-secondary text-center @(Model.DailySolveCount == 0 ? "d-block" : "d-none")">
+                    No problem solved today
+                </div>
+                <div class="max-vh-50 overflow-auto @(Model.DailySolveCount == 0 ? "d-none" : "d-block")">
+                    <table class="table table-striped table-borderless">
+                        <thead class="table-success sticky-top">
+                            <tr>
+                                <th>#</th>
+                                <th>Judge</th>
+                                <th class="text-center">Solved</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var summary in Model.DailySolveCountSummary)
+                            {
+                                <tr>
+                                    <td>@summary.Index.</td>
+                                    <td>@summary.JudgeName</td>
+                                    <td class="text-center">@summary.SolveCount</td>
+                                </tr>
+                            }
+                    </table>
+                </div>
+            </div>
+            <div class="total-solve-summary-section col-md-6">
+                <h5>Total Solve Summary</h5>
+                <div class="border-bottom mb-3"></div>
+                <div class="text-secondary fs-6 d-none text-center">No problem solved in any online judge</div>
+                <div class="d-block max-vh-50 overflow-auto">
+                    <table class="table table-striped table-borderless">
+                        <thead class="table-success sticky-top">
+                            <tr>
+                                <th>#</th>
+                                <th>Judge</th>
+                                <th>Handle</th>
+                                <th class="text-center">Solved</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var summary in Model.TotalSolveCountSummary)
+                            {
+                                <tr>
+                                    <td>@summary.Index.</td>
+                                    <td>@summary.JudgeName</td>
+                                    <td><a href="@summary.ProfileLink" target="_blank" class="text-decoration-none">@summary.OnlineJudgeHandle</a></td>
+                                    <td class="text-center">@summary.SolveCount</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

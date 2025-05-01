@@ -1,0 +1,18 @@
+﻿@model SolveTracker.ViewModels.Dashboard.TeacherViewModel;
+
+<div id="dashboardContainer" class="w-75 mx-auto">
+    <div class="greeting-section card p-4 my-3 rounded shadow-sm border-0">
+        <h3>Good afternoon, @Model.DisplayName!</h3>
+        <div class="text-secondary">Welcome back to your SolveTracker dashboard.</div>
+    </div>
+
+    <div class="solve-stats-section card p-4 my-3 rounded shadow-sm border-0">
+        <p>The teacher dashboard section is under development</p>
+        <div>
+            <button class="btn btn-success" onclick="window.location.href='@Url.Action("Index", "Programmers")'">Programmers</button>
+            <button class="btn btn-success" onclick="window.location.href='@Url.Action("Index", "Mentors")'">Mentors</button>
+            <button class="btn btn-success" onclick="window.location.href='@Url.Action("Index", "Notification")'">Notification</button>
+        </div>
+    </div>
+
+</div>

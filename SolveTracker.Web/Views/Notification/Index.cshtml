@@ -1,0 +1,25 @@
+﻿@model IEnumerable<SolveTracker.ViewModels.Notification.NotificationViewModel>
+
+
+<div id="dashboardContainer" class="w-75 mx-auto">
+    @if(Model.Count() == 0)
+    {
+        <div class="notification card p-4 my-3 rounded shadow-sm border-0">
+            <p>No notifictaion found</p>
+        </div>
+    }
+    else
+    {
+        @foreach (var notification in Model)
+        {
+            <div class="notification card p-4 my-3 rounded shadow-sm border-0">
+                <div>
+                    <h5>@notification.HeaderMessage</h5>
+                    <ul>
+                        <li>@notification.BodyMessage</li>
+                    </ul>
+                </div>
+            </div>
+        }
+    }
+</div>

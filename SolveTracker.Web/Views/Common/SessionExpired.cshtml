@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Session Expired";
+}
+
+<div class="text-center">
+    <div>
+        <h3>Session Expired</h3>
+    </div>
+    <div>
+        <p>
+            You must be logged in to access this page. <br />
+        </p>
+        <button class="btn btn-success" onclick="window.location.href='@Url.Action("Index", "Login")'">Login</button>
+    </div>
+</div>

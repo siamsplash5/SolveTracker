@@ -1,0 +1,28 @@
+﻿@model SolveTracker.ViewModels.Login.LoginViewModel
+
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="login-section col-md-4 card p-4 my-3 rounded shadow-sm border-0">
+        <h5>Login to SolveTracker</h5>
+        <div class="border-bottom mb-3"></div>
+        <form asp-action="Index" method="post">
+            @if (ViewData.ModelState[""]?.Errors.Count > 0)
+            {
+                <div class="alert alert-danger">
+                    @ViewData.ModelState[""].Errors[0].ErrorMessage
+                </div>
+            }
+            <div class="form-group">
+                <label asp-for="Username"></label>
+                <input asp-for="Username" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" type="password" />
+            </div>
+            <div class="border-bottom mb-3 mt-3"></div>
+            <button type="submit" class="btn btn-success">Login</button>
+        </form>
+    </div>
+    <div class="col-md-4"></div>
+</div>

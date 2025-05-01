@@ -1,0 +1,37 @@
+﻿@model SolveTracker.ViewModels.Registration.RegistrationViewModel
+
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="login-section col-md-4 card p-4 my-3 rounded shadow-sm border-0">
+        <h5>Register for SolveTracker</h5>
+        <div class="border-bottom mb-3"></div>
+        <form asp-action="Index" method="post">
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <div><span asp-validation-for="Name" class="text-danger"></span></div>
+                <input asp-for="Name" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Username"></label>
+                <div><span asp-validation-for="Username" class="text-danger"></span></div>
+                <input asp-for="Username" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <div><span asp-validation-for="Password" class="text-danger"></span></div>
+                <input asp-for="Password" class="form-control" type="password" />
+            </div>
+            <div class="border-bottom mb-3 mt-3"></div>
+            <div class="form-group">
+                <div><span asp-validation-for="Role" class="text-danger"></span></div>
+                <label>I'm a: </label>
+                <input type="radio" asp-for="Role" name="Role" value="1" class="mx-1" /> Programmer
+                <input type="radio" asp-for="Role" name="Role" value="2" class="mx-1" /> Teacher
+                <input type="radio" asp-for="Role" name="Role" value="3" class="mx-1" /> Mentor
+            </div>
+            <div class="border-bottom mb-3 mt-3"></div>
+            <button type="submit" class="btn btn-success">Register</button>
+        </form>
+    </div>
+    <div class="col-md-4"></div>
+</div>
