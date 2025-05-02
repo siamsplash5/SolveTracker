@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity.Data;
 using SolveTracker.Domain.Entities.Common;
 using SolveTracker.Domain.Entities.DailyLog;
+using SolveTracker.Domain.Entities.Login;
 using SolveTracker.Domain.Entities.Registration;
 using SolveTracker.Web.Models.DailyLog;
 using SolveTracker.Web.Models.Login;

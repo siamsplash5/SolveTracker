@@ -1,13 +1,13 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
-using System.Configuration;
+using Microsoft.Extensions.Configuration;
 using System.Data;
 
 namespace SolveTracker.Infrastructure.DBContext;
 
-public class DapperDBContext : IDapperDBContext
+public class DapperDBContext(IConfiguration configuration): IDapperDBContext
 {
-    private readonly string _connectionString = ConfigurationManager.AppSettings["ConnectionString"];
+    private readonly string _connectionString = configuration.GetConnectionString("DefaultConnection");
 
     public async Task ExecuteAsync<TParam>(TParam obj, string spName)
     {
