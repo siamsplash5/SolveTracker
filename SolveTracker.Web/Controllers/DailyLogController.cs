@@ -1,45 +1,44 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SolveTracker.Events.Handlers;
-using SolveTracker.Models.Common;
-using SolveTracker.Models.DailyLog;
-using SolveTracker.Services.DailyLog;
-using SolveTracker.Utilities.Attributes;
-using SolveTracker.ViewModels.Common;
-using SolveTracker.ViewModels.DailyLog;
+using SolveTracker.Application.Services.DailyLog;
+using SolveTracker.Domain.Entities.Common;
+using SolveTracker.Domain.Entities.DailyLog;
+using SolveTracker.Infrastructure.Events;
+using SolveTracker.Web.Extensions.Attributes;
+using SolveTracker.Web.Models.Common;
+using SolveTracker.Web.Models.DailyLog;
 
-namespace SolveTracker.Controllers
+namespace SolveTracker.Web.Controllers;
+
+[RoleAuthorize([UserRole.Programmer])]
+public class DailyLogController(
+    IMapper mapper, 
+    IDailyLogService dailyLogService,
+    DailyLogNotificationHandler handler) : Controller
 {
-    [RoleAuthorize([UserRole.Programmer])]
-    public class DailyLogController(
-        IMapper mapper, 
-        IDailyLogService dailyLogService,
-        DailyLogNotificationHandler handler) : Controller
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return View();
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> Index(DailyLogViewModel model)
+    [HttpPost]
+    public async Task<IActionResult> Index(DailyLogViewModel model)
+    {
+        try
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    var dailyLogInfo = mapper.Map<DailyLogInfo>(model);
-                    dailyLogService.DailylogAdded += handler.HandleDailyLogAddedNotification;
-                    await dailyLogService.AddDailyLogAsync(dailyLogInfo);
-                    return RedirectToAction("Index", "Dashboard");
-                }
-                return View(model);
+                var dailyLogInfo = mapper.Map<DailyLogInfo>(model);
+                dailyLogService.DailylogAdded += handler.HandleDailyLogAddedNotification;
+                await dailyLogService.AddDailyLogAsync(dailyLogInfo);
+                return RedirectToAction("Index", "Dashboard");
             }
-            catch (Exception)
-            {
-                var errorViewModel = new ErrorViewModel();
-                return View("../Common/Error", errorViewModel);
-            }
+            return View(model);
+        }
+        catch (Exception)
+        {
+            var errorViewModel = new ErrorViewModel();
+            return View("../Common/Error", errorViewModel);
         }
     }
 }

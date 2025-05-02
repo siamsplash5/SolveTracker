@@ -1,7 +1,6 @@
-﻿namespace SolveTracker.ViewModels.Dashboard
+﻿namespace SolveTracker.Web.Models.Dashboard;
+
+public class TeacherViewModel
 {
-    public class TeacherViewModel
-    {
-        public string DisplayName { get; set; }
-    }
+    public string DisplayName { get; set; }
 }

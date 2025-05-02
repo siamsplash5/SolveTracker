@@ -1,9 +1,8 @@
-namespace SolveTracker.ViewModels.Common
-{
-    public class ErrorViewModel
-    {
-        public string RequestId { get; set; }
+namespace SolveTracker.Web.Models.Common;
 
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
-    }
+public class ErrorViewModel
+{
+    public string RequestId { get; set; }
+
+    public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 }

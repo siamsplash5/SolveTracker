@@ -1,7 +1,8 @@
-﻿using SolveTracker.DBContext;
-using SolveTracker.Domain.Entities.DailyLog;
+﻿using SolveTracker.Domain.Entities.DailyLog;
+using SolveTracker.Domain.Repositories;
+using SolveTracker.Infrastructure.DBContext;
 
-namespace SolveTracker.Repositories.DailyLog;
+namespace SolveTracker.Infrastructure.Repositories;
 
 public class DailyLogRepository(IDapperDBContext dapperDBContext) : IDailyLogRepository
 {

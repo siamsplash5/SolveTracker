@@ -9,4 +9,10 @@
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="13.0.1" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\SolveTracker.Application\SolveTracker.Application.csproj" />
+	  <ProjectReference Include="..\SolveTracker.Domain\SolveTracker.Domain.csproj" />
+	  <ProjectReference Include="..\SolveTracker.Infrastructure\SolveTracker.Infrastructure.csproj" />
+	</ItemGroup>
 </Project>

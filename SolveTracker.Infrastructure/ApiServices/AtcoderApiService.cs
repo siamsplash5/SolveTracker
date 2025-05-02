@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SolveTracker.Domain.ApiServices;
-using SolveTracker.Models.Common;
+using SolveTracker.Domain.Entities.Common;
 using System.IO.Compression;
 
 namespace SolveTracker.Infrastructure.ApiServices;

@@ -6,6 +6,11 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
+  </ItemGroup>
+
 	<ItemGroup>
 	  <ProjectReference Include="..\SolveTracker.Domain\SolveTracker.Domain.csproj" />
 	</ItemGroup>

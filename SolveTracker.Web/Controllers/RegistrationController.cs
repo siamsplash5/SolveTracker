@@ -1,29 +1,28 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SolveTracker.Models.Registration;
-using SolveTracker.Services.Registration;
-using SolveTracker.ViewModels.Registration;
+using SolveTracker.Application.Services.Registration;
+using SolveTracker.Domain.Entities.Registration;
+using SolveTracker.Web.Models.Registration;
 
-namespace SolveTracker.Controllers
+namespace SolveTracker.Web.Controllers;
+
+public class RegistrationController(IRegistrationService registrationService, IMapper mapper) : Controller
 {
-    public class RegistrationController(IRegistrationService registrationService, IMapper mapper) : Controller
+    public IActionResult Index()
     {
-        public IActionResult Index()
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Index(RegistrationViewModel model)
+    {
+        if (ModelState.IsValid)
         {
-            return View();
+            var request = mapper.Map<RegistrationRequest>(model);
+            await registrationService.CreateAccountAsync(request);
+            return RedirectToAction("Index", "Dashboard");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Index(RegistrationViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var request = mapper.Map<RegistrationRequest>(model);
-                await registrationService.CreateAccountAsync(request);
-                return RedirectToAction("Index", "Dashboard");
-            }
-
-            return View(model);
-        }
+        return View(model);
     }
 }

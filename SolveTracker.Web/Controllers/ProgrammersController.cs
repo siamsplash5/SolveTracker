@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SolveTracker.Models.Common;
-using SolveTracker.Utilities.Attributes;
+using SolveTracker.Domain.Entities.Common;
+using SolveTracker.Web.Extensions.Attributes;
 
-namespace SolveTracker.Controllers
+namespace SolveTracker.Web.Controllers;
+
+public class ProgrammersController : Controller
 {
-    public class ProgrammersController : Controller
+    [RoleAuthorize(UserRole.Teacher)]
+    public IActionResult Index()
     {
-        [RoleAuthorize(UserRole.Teacher)]
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return View();
     }
 }

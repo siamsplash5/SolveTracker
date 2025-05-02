@@ -1,10 +1,8 @@
-﻿namespace SolveTracker.DBContext
+﻿namespace SolveTracker.Infrastructure.DBContext;
+
+public interface IDapperDBContext
 {
-    public interface IDapperDBContext
-    {
-        Task ExecuteAsync<TParams>(TParams obj, string spName);
-        Task<TResult> GetScalerValueAsync<TParam, TResult>(TParam obj, string spName);
-        Task<TResult> GetInfoAsync<TParam, TResult>(TParam obj, string spName);
-        Task<IEnumerable<TResult>> GetInfoListAsync<TParam, TResult>(TParam obj, string spName);
-    }
+    Task ExecuteAsync<TParams>(TParams obj, string spName);
+    Task<TResult> GetInfoAsync<TParam, TResult>(TParam obj, string spName);
+    Task<IEnumerable<TResult>> GetInfoListAsync<TParam, TResult>(TParam obj, string spName);
 }

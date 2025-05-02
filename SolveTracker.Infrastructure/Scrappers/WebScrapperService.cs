@@ -1,10 +1,11 @@
 ﻿using PuppeteerSharp;
+using SolveTracker.Domain.Scrappers;
 
 namespace SolveTracker.Infrastructure.Scrappers;
 
-internal class WebScrapperService
+public class WebScrapperService : IWebScrapperService
 {
-    public static async Task<string> GetDynamicHtmlContentAsync(string url)
+    public async Task<string> GetDynamicHtmlContentAsync(string url)
     {
         var browserFetcher = new BrowserFetcher();
         _ = await browserFetcher.DownloadAsync();

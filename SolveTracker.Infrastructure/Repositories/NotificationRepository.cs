@@ -1,24 +1,24 @@
-﻿using SolveTracker.DBContext;
-using SolveTracker.Models.Notifications;
+﻿using SolveTracker.Domain.Entities.Notifications;
+using SolveTracker.Domain.Repositories;
+using SolveTracker.Infrastructure.DBContext;
 
-namespace SolveTracker.Repositories.Notifications
+namespace SolveTracker.Infrastructure.Repositories;
+
+public class NotificationRepository(IDapperDBContext dapperDBContext) : INotificationRepository
 {
-    public class NotificationRepository(IDapperDBContext dapperDBContext) : INotificationRepository
+    private readonly string _addNotificationInfoSP = "NOTIFICATION_AddNotificationInfo";
+    private readonly string _getNotificationInfoSP = "NOTIFICATION_GetNotificationInfo";
+
+    public async Task AddNotificationInfoAsync(int publisherID, string dailyLogID)
     {
-        private readonly string _addNotificationInfoSP = "NOTIFICATION_AddNotificationInfo";
-        private readonly string _getNotificationInfoSP = "NOTIFICATION_GetNotificationInfo";
+        await dapperDBContext.ExecuteAsync(new {publisherID, dailyLogID}, _addNotificationInfoSP);
+    }
 
-        public async Task AddNotificationInfoAsync(int publisherID, string dailyLogID)
+    public async Task<IEnumerable<NotificationInfo>> GetNotificationsAsync(int recipientID)
+    {
+        return await dapperDBContext.GetInfoListAsync<object, NotificationInfo>(new
         {
-            await dapperDBContext.ExecuteAsync(new {publisherID, dailyLogID}, _addNotificationInfoSP);
-        }
-
-        public async Task<IEnumerable<NotificationInfo>> GetNotificationsAsync(int recipientID)
-        {
-            return await dapperDBContext.GetInfoListAsync<object, NotificationInfo>(new
-            {
-                RecipientID = recipientID
-            }, _getNotificationInfoSP);
-        }
+            RecipientID = recipientID
+        }, _getNotificationInfoSP);
     }
 }

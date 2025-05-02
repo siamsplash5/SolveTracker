@@ -2,55 +2,53 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using SolveTracker.Models.Login;
-using SolveTracker.Services.Login;
-using SolveTracker.ViewModels.Login;
+using SolveTracker.Application.Services.Login;
+using SolveTracker.Domain.Entities.Login;
+using SolveTracker.Web.Models.Login;
 using System.Security.Claims;
 
-namespace SolveTracker.Controllers
+namespace SolveTracker.Web.Controllers;
+
+public class LoginController(ILoginService loginService, IMapper mapper) : Controller
 {
-    public class LoginController(ILoginService loginService, IMapper mapper) : Controller
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return View();
+    }
 
-
-        [HttpPost]
-        public async Task<IActionResult> Index(LoginViewModel model)
+    [HttpPost]
+    public async Task<IActionResult> Index(LoginViewModel model)
+    {
+        if (ModelState.IsValid)
         {
-            if (ModelState.IsValid)
+            var loginInfo = mapper.Map<LoginRequest>(model);
+            var loginResponse = await loginService.IsLoginInformationValidAsync(loginInfo);
+
+            if (!string.IsNullOrEmpty(loginResponse?.UserId))
             {
-                var loginInfo = mapper.Map<LoginRequest>(model);
-                var loginResponse = await loginService.IsLoginInformationValidAsync(loginInfo);
-
-                if (!string.IsNullOrEmpty(loginResponse?.UserId))
+                var claims = new List<Claim>
                 {
-                    var claims = new List<Claim>
-                    {
-                        new (ClaimTypes.Sid, loginResponse.UserId),
-                        new (ClaimTypes.Name, loginResponse.Name),
-                        new (ClaimTypes.Role, loginResponse.Role.ToString())
-                    };
+                    new (ClaimTypes.Sid, loginResponse.UserId),
+                    new (ClaimTypes.Name, loginResponse.Name),
+                    new (ClaimTypes.Role, loginResponse.Role.ToString())
+                };
 
-                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var principal = new ClaimsPrincipal(identity);
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                    return RedirectToAction("Index", "Dashboard");
-                }
-
-                ModelState.AddModelError("", "Invalid username or password");
+                return RedirectToAction("Index", "Dashboard");
             }
 
-            return View(model);
+            ModelState.AddModelError("", "Invalid username or password");
         }
 
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Login");
-        }
+        return View(model);
+    }
+
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return RedirectToAction("Index", "Login");
     }
 }
