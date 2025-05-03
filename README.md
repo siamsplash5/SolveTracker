@@ -1,1 +1,1 @@
-A web application to track competitive programming progress based on the Onion Architecture.
+SolveTracker is a web application designed to help users track their competitive programming progress. Built using Onion Architecture, this application provides a clean and maintainable codebase, making it easy to scale and extend. Users can monitor their performance across various competitive programming platforms, providing valuable insights into their coding journey.
