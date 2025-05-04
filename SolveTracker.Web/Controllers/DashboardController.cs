@@ -22,12 +22,12 @@ public class DashboardController(IDashboardService dashboardService) : Controlle
         {
             if (User.IsInRole("Programmer"))
             {
-                var model = await GetProgrammerViewModelAsync();
+                ProgrammerViewModel model = await GetProgrammerViewModelAsync();
                 return View("ProgrammerDashboard", model);
             }
             else if (User.IsInRole("Teacher"))
             {
-                var model = await GetTeacherViewModelAsync();
+                TeacherViewModel model = await GetTeacherViewModelAsync();
                 return View("TeacherDashboard", model);
             }
 
@@ -35,7 +35,7 @@ public class DashboardController(IDashboardService dashboardService) : Controlle
         }
         catch (Exception)
         {
-            var errorViewModel = new ErrorViewModel();
+            ErrorViewModel errorViewModel = new();
             return View("Error", errorViewModel);
         }
     }
@@ -46,15 +46,17 @@ public class DashboardController(IDashboardService dashboardService) : Controlle
 
     private async Task<ProgrammerViewModel> GetProgrammerViewModelAsync()
     {
-        var onlineJudgeHandle = await dashboardService.GetOnlineJudgeHandleAsync();
-        var onlineJudgeProfileLink = await dashboardService.GetOnlineJudgeProfileLinkAsync();
+        OnlineJudgeHandle onlineJudgeHandle = await dashboardService.GetOnlineJudgeHandleAsync();
+        OnlineJudgeProfileLink onlineJudgeProfileLink = await dashboardService.GetOnlineJudgeProfileLinkAsync();
+        
         int weeklySolveCount = await dashboardService.GetWeeklySolveCountAsync();
-        var dailySolveCountSummary = await dashboardService.GetDailySolveCountSummaryAsync();
-        var totalSolveCountSummary = await dashboardService.GetTotalSolveCountSummaryAsync();
-        var formattedDailySolveCountSummary = GetFormattedDailySolveCountSummary(dailySolveCountSummary);
-        var formattedTotalSolveCountSummary = GetFormattedTotalSolveCountSummary(totalSolveCountSummary, onlineJudgeHandle, onlineJudgeProfileLink);
+        SolveCountSummary dailySolveCountSummary = await dashboardService.GetDailySolveCountSummaryAsync();
+        SolveCountSummary totalSolveCountSummary = await dashboardService.GetTotalSolveCountSummaryAsync();
 
-        var model = new ProgrammerViewModel
+        List<DailySolveCountSummary> formattedDailySolveCountSummary = GetFormattedDailySolveCountSummary(dailySolveCountSummary);
+        List<TotalSolveCountSummary> formattedTotalSolveCountSummary = GetFormattedTotalSolveCountSummary(totalSolveCountSummary, onlineJudgeHandle, onlineJudgeProfileLink);
+
+        ProgrammerViewModel model = new()
         {
             DisplayName = User.Identity.Name,
             DailySolveCount = dailySolveCountSummary.Total,
@@ -70,7 +72,7 @@ public class DashboardController(IDashboardService dashboardService) : Controlle
     private async Task<TeacherViewModel> GetTeacherViewModelAsync()
     {
         await Task.Delay(100);
-        var model = new TeacherViewModel
+        TeacherViewModel model = new()
         {
             DisplayName = User.Identity.Name,
         };
@@ -81,18 +83,22 @@ public class DashboardController(IDashboardService dashboardService) : Controlle
     private static List<DailySolveCountSummary> GetFormattedDailySolveCountSummary(SolveCountSummary summary)
     {
         int index = 1;
-        var result = new List<DailySolveCountSummary>();
-        var summaryProperties = summary
+        List<DailySolveCountSummary> result = [];
+        IEnumerable<PropertyInfo> summaryProperties = summary
                 .GetType()
                 .GetProperties()
                 .Where(property => property.Name != "Total");
 
-        foreach (var property in summaryProperties)
+        foreach (PropertyInfo property in summaryProperties)
         {
-            var solveCount = (int)property.GetValue(summary);
-            if (solveCount == 0) continue;
-            var attr = property.GetCustomAttribute<OnlineJudgeInfoAttribute>(false);
-            var judgeName = attr.Name;
+            int solveCount = (int)property.GetValue(summary);
+            if (solveCount == 0)
+            {
+                continue;
+            }
+
+            OnlineJudgeInfoAttribute attr = property.GetCustomAttribute<OnlineJudgeInfoAttribute>(false);
+            string judgeName = attr.Name;
 
             result.Add(new DailySolveCountSummary
             {
@@ -110,27 +116,31 @@ public class DashboardController(IDashboardService dashboardService) : Controlle
     private static List<TotalSolveCountSummary> GetFormattedTotalSolveCountSummary(SolveCountSummary summary, OnlineJudgeHandle onlineJudgeHandle, OnlineJudgeProfileLink onlineJudgeProfileLink)
     {
         int index = 1;
-        var result = new List<TotalSolveCountSummary>();
-        var summaryProperties = summary
+        List<TotalSolveCountSummary> result = [];
+        IEnumerable<PropertyInfo> summaryProperties = summary
                 .GetType()
                 .GetProperties()
                 .Where(property => property.Name != "Total");
 
-        foreach (var property in summaryProperties)
+        foreach (PropertyInfo property in summaryProperties)
         {
-            var solveCount = (int)property.GetValue(summary);
-            if (solveCount == 0) continue;
-            var attr = property.GetCustomAttribute<OnlineJudgeInfoAttribute>(false);
-            var judgeName = attr.Name;
+            int solveCount = (int)property.GetValue(summary);
+            if (solveCount == 0)
+            {
+                continue;
+            }
 
-            var handle = (string)onlineJudgeHandle
+            OnlineJudgeInfoAttribute attr = property.GetCustomAttribute<OnlineJudgeInfoAttribute>(false);
+            string judgeName = attr.Name;
+
+            string handle = (string)onlineJudgeHandle
                 .GetType()
                 .GetProperties()
                 .Where(property => property.GetCustomAttribute<OnlineJudgeInfoAttribute>(false).Name == judgeName)
                 .FirstOrDefault()
                 ?.GetValue(onlineJudgeHandle);
 
-            var profileLink = (string)onlineJudgeProfileLink
+            string profileLink = (string)onlineJudgeProfileLink
                 .GetType()
                 .GetProperties()
                 .Where(property => property.GetCustomAttribute<OnlineJudgeInfoAttribute>(false).Name == judgeName)

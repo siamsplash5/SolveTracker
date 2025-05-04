@@ -1,18 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SolveTracker.Application.Services.Notification;
+using SolveTracker.Domain.Entities.Notifications;
 using SolveTracker.Web.Models.Notification;
 
 namespace SolveTracker.Web.Controllers;
 
-public class NotificationController (INotificationService notificationService) : Controller
+public class NotificationController(INotificationService notificationService) : Controller
 {
     public async Task<IActionResult> Index()
     {
-        var notifications = await notificationService.GetNotificationsAsync();
+        IEnumerable<NotificationInfo> notifications = await notificationService.GetNotificationsAsync();
 
-        var notificationList = new List<NotificationViewModel>();
+        List<NotificationViewModel> notificationList = [];
 
-        foreach(var notification in notifications)
+        foreach (NotificationInfo notification in notifications)
         {
             notificationList.Add(new NotificationViewModel
             {

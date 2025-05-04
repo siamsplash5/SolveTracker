@@ -11,7 +11,7 @@ public class NotificationRepository(IDapperDBContext dapperDBContext) : INotific
 
     public async Task AddNotificationInfoAsync(int publisherID, string dailyLogID)
     {
-        await dapperDBContext.ExecuteAsync(new {publisherID, dailyLogID}, _addNotificationInfoSP);
+        await dapperDBContext.ExecuteAsync(new { publisherID, dailyLogID }, _addNotificationInfoSP);
     }
 
     public async Task<IEnumerable<NotificationInfo>> GetNotificationsAsync(int recipientID)

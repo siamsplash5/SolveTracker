@@ -12,7 +12,7 @@ namespace SolveTracker.Web.Controllers;
 
 [RoleAuthorize([UserRole.Programmer])]
 public class DailyLogController(
-    IMapper mapper, 
+    IMapper mapper,
     IDailyLogService dailyLogService,
     DailyLogNotificationHandler handler) : Controller
 {
@@ -28,7 +28,7 @@ public class DailyLogController(
         {
             if (ModelState.IsValid)
             {
-                var dailyLogInfo = mapper.Map<DailyLogInfo>(model);
+                DailyLogInfo dailyLogInfo = mapper.Map<DailyLogInfo>(model);
                 dailyLogService.DailylogAdded += handler.HandleDailyLogAddedNotification;
                 await dailyLogService.AddDailyLogAsync(dailyLogInfo);
                 return RedirectToAction("Index", "Dashboard");
@@ -37,7 +37,7 @@ public class DailyLogController(
         }
         catch (Exception)
         {
-            var errorViewModel = new ErrorViewModel();
+            ErrorViewModel errorViewModel = new();
             return View("../Common/Error", errorViewModel);
         }
     }

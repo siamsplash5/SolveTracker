@@ -18,7 +18,7 @@ public class RegistrationController(IRegistrationService registrationService, IM
     {
         if (ModelState.IsValid)
         {
-            var request = mapper.Map<RegistrationRequest>(model);
+            RegistrationRequest request = mapper.Map<RegistrationRequest>(model);
             await registrationService.CreateAccountAsync(request);
             return RedirectToAction("Index", "Dashboard");
         }

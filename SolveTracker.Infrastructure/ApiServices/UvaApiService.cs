@@ -13,9 +13,9 @@ public class UvaApiService(ILogger<UvaApiService> logger) : IUvaApiService
         logger.LogInformation("UVa API call has started...");
 
         string url = $"{_baseAPIUrl}{userId}";
-        using var httpClient = new HttpClient();
-        var jsonResponse = await httpClient.GetStringAsync(url);
-        var data = JsonSerializer.Deserialize<JsonElement>(jsonResponse);
+        using HttpClient httpClient = new();
+        string jsonResponse = await httpClient.GetStringAsync(url);
+        JsonElement data = JsonSerializer.Deserialize<JsonElement>(jsonResponse);
         int[][] subs = JsonSerializer.Deserialize<int[][]>(data.GetProperty("subs").GetRawText());
         int acceptedVerdictId = 90;
         int count = subs.Where(submissionData => submissionData[2] == acceptedVerdictId)

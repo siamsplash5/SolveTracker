@@ -18,7 +18,7 @@ public class DailyLogService(
     {
         try
         {
-            var userId = httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Sid)?.Value;
+            string userId = httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Sid)?.Value;
             dailyLog.ID = Guid.NewGuid().ToString();
             dailyLog.UserId = Convert.ToInt32(userId);
             await dailyLogRepository.AddDailyLogAsync(dailyLog);

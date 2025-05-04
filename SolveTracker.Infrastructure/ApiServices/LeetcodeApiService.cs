@@ -15,9 +15,9 @@ public class LeetcodeApiService(ILogger<LeetcodeApiService> logger) : ILeetcodeA
             logger.LogInformation("LeetCode API call has started...");
 
             string url = $"{_baseAPIUrl}{username}";
-            using var httpClient = new HttpClient();
-            var jsonResponse = await httpClient.GetStringAsync(url);
-            var data = JsonSerializer.Deserialize<JsonElement>(jsonResponse);
+            using HttpClient httpClient = new();
+            string jsonResponse = await httpClient.GetStringAsync(url);
+            JsonElement data = JsonSerializer.Deserialize<JsonElement>(jsonResponse);
             int count = data.GetProperty("totalSolved").GetInt32();
 
             logger.LogInformation("LeetCode API call has finished.");

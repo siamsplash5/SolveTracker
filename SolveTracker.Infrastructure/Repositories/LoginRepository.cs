@@ -4,7 +4,7 @@ using SolveTracker.Infrastructure.DBContext;
 
 namespace SolveTracker.Infrastructure.Repositories;
 
-public class LoginRepository (IDapperDBContext dapperDBContext) : ILoginRepository
+public class LoginRepository(IDapperDBContext dapperDBContext) : ILoginRepository
 {
     private readonly string CheckLoginInformationValidSP = "USERS_CheckLoginInformationValid";
 

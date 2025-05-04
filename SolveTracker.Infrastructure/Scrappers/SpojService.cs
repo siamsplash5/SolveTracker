@@ -15,8 +15,8 @@ public class SpojService(IWebScrapperService webScrapperService, ILogger<SpojSer
             logger.LogInformation("Spoj scrapping has started...");
 
             string url = $"{_baseUrl}{username}";
-            var htmlContent = await webScrapperService.GetDynamicHtmlContentAsync(url);
-            var htmlDocument = new HtmlDocument();
+            string htmlContent = await webScrapperService.GetDynamicHtmlContentAsync(url);
+            HtmlDocument htmlDocument = new();
 
             htmlDocument.LoadHtml(htmlContent);
 

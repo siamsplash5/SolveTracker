@@ -15,9 +15,9 @@ public partial class CodeforcesService(IWebScrapperService webScrapperService, I
         {
             logger.LogInformation("Codeforces scrapping has started...");
 
-            var url = $"{_baseUrl}{username}";
-            var htmlContent = await webScrapperService.GetDynamicHtmlContentAsync(url);
-            var htmlDocument = new HtmlDocument();
+            string url = $"{_baseUrl}{username}";
+            string htmlContent = await webScrapperService.GetDynamicHtmlContentAsync(url);
+            HtmlDocument htmlDocument = new();
 
             htmlDocument.LoadHtml(htmlContent);
 

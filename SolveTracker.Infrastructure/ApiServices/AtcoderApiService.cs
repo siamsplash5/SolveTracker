@@ -6,7 +6,7 @@ using System.IO.Compression;
 
 namespace SolveTracker.Infrastructure.ApiServices;
 
-public class AtcoderApiService(ILogger<AtcoderApiService> logger): IAtcoderApiService
+public class AtcoderApiService(ILogger<AtcoderApiService> logger) : IAtcoderApiService
 {
     private const string _baseAPIUrl = "https://kenkoooo.com/atcoder/atcoder-api/v3/user/ac_rank";
 
@@ -16,19 +16,19 @@ public class AtcoderApiService(ILogger<AtcoderApiService> logger): IAtcoderApiSe
         {
             logger.LogInformation("Atcoder API call has started...");
 
-            using var httpClient = CreateHttpClient(_baseAPIUrl);
+            using HttpClient httpClient = CreateHttpClient(_baseAPIUrl);
             string parameter = $"?user={username}";
-            var response = await httpClient.GetAsync(parameter).ConfigureAwait(false);
+            HttpResponseMessage response = await httpClient.GetAsync(parameter).ConfigureAwait(false);
 
             logger.LogInformation("Atcoder API call has finished.");
 
             if (response.IsSuccessStatusCode)
             {
-                var contentStream = await response.Content.ReadAsStreamAsync();
-                using var decompressedStream = new GZipStream(contentStream, CompressionMode.Decompress);
-                using var streamReader = new StreamReader(decompressedStream);
-                var content = await streamReader.ReadToEndAsync();
-                var apiResponse = JsonConvert.DeserializeObject<AtCoderApiResponse>(content);
+                Stream contentStream = await response.Content.ReadAsStreamAsync();
+                using GZipStream decompressedStream = new(contentStream, CompressionMode.Decompress);
+                using StreamReader streamReader = new(decompressedStream);
+                string content = await streamReader.ReadToEndAsync();
+                AtCoderApiResponse apiResponse = JsonConvert.DeserializeObject<AtCoderApiResponse>(content);
 
                 return apiResponse?.Count ?? 0;
             }
@@ -43,7 +43,7 @@ public class AtcoderApiService(ILogger<AtcoderApiService> logger): IAtcoderApiSe
 
     private static HttpClient CreateHttpClient(string baseUrl)
     {
-        var httpClient = new HttpClient
+        HttpClient httpClient = new()
         {
             BaseAddress = new Uri(baseUrl)
         };
