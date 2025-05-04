@@ -21,20 +21,20 @@ public class LoginController(ILoginService loginService, IMapper mapper) : Contr
     {
         if (ModelState.IsValid)
         {
-            var loginInfo = mapper.Map<LoginRequest>(model);
-            var loginResponse = await loginService.IsLoginInformationValidAsync(loginInfo);
+            LoginRequest loginInfo = mapper.Map<LoginRequest>(model);
+            LoginResponse loginResponse = await loginService.IsLoginInformationValidAsync(loginInfo);
 
             if (!string.IsNullOrEmpty(loginResponse?.UserId))
             {
-                var claims = new List<Claim>
-                {
+                List<Claim> claims =
+                [
                     new (ClaimTypes.Sid, loginResponse.UserId),
                     new (ClaimTypes.Name, loginResponse.Name),
                     new (ClaimTypes.Role, loginResponse.Role.ToString())
-                };
+                ];
 
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var principal = new ClaimsPrincipal(identity);
+                ClaimsIdentity identity = new(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                ClaimsPrincipal principal = new(identity);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
                 return RedirectToAction("Index", "Dashboard");

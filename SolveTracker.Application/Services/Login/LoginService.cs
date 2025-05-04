@@ -3,7 +3,7 @@ using SolveTracker.Domain.Repositories;
 
 namespace SolveTracker.Application.Services.Login;
 
-public class LoginService (ILoginRepository loginRepository) : ILoginService
+public class LoginService(ILoginRepository loginRepository) : ILoginService
 {
     public async Task<LoginResponse> IsLoginInformationValidAsync(LoginRequest loginRequest)
     {

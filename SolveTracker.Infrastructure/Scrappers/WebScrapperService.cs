@@ -7,12 +7,12 @@ public class WebScrapperService : IWebScrapperService
 {
     public async Task<string> GetDynamicHtmlContentAsync(string url)
     {
-        var browserFetcher = new BrowserFetcher();
+        BrowserFetcher browserFetcher = new();
         _ = await browserFetcher.DownloadAsync();
-        using var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
-        using var page = await browser.NewPageAsync();
-        await page.GoToAsync(url);
-        var content = await page.GetContentAsync();
+        using IBrowser browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
+        using IPage page = await browser.NewPageAsync();
+        _ = await page.GoToAsync(url);
+        string content = await page.GetContentAsync();
         return content;
     }
 }

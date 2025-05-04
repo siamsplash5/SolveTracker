@@ -15,8 +15,8 @@ public class LightOjService(IWebScrapperService webScrapperService, ILogger<Ligh
             logger.LogInformation("LightOj scrapping has started...");
 
             string url = $"{_baseUrl}{username}";
-            var htmlContent = await webScrapperService.GetDynamicHtmlContentAsync(url);
-            var htmlDocument = new HtmlDocument();
+            string htmlContent = await webScrapperService.GetDynamicHtmlContentAsync(url);
+            HtmlDocument htmlDocument = new();
 
             htmlDocument.LoadHtml(htmlContent);
 

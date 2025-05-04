@@ -8,7 +8,7 @@ public class DashboardRepository : IDashboardRepository
     public Task<SolveCountSummary> GetTotalSolveCountSummaryAsync()
     {
         // TODO: Will Introduce Database
-        var totalSolveCountSummary = new SolveCountSummary
+        SolveCountSummary totalSolveCountSummary = new()
         {
             AtCoder = 165,
             Codeforces = 1900,
@@ -27,7 +27,7 @@ public class DashboardRepository : IDashboardRepository
     public Task<SolveCountSummary> GetDailySolveCountSummaryAsync()
     {
         // TODO: Will Introduce Database
-        var dailySolveCountSummary = new SolveCountSummary
+        SolveCountSummary dailySolveCountSummary = new()
         {
             AtCoder = 3,
             Codeforces = 0,
@@ -40,7 +40,7 @@ public class DashboardRepository : IDashboardRepository
     public Task<OnlineJudgeHandle> GetOnlineJudgeHandleAsync()
     {
         // TODO: Will Introduce Database
-        var onlineJudgeProfile = new OnlineJudgeHandle
+        OnlineJudgeHandle onlineJudgeProfile = new()
         {
             AtCoder = "siamsplash5",
             Codeforces = "siamsplash5",
@@ -59,7 +59,7 @@ public class DashboardRepository : IDashboardRepository
     public Task<OnlineJudgeProfileLink> GetOnlineJudgeProfileLinkAsync()
     {
         // TODO: Will Introduce Database
-        var onlineJudgeProfileLink = new OnlineJudgeProfileLink
+        OnlineJudgeProfileLink onlineJudgeProfileLink = new()
         {
             AtCoder = "https://atcoder.jp/users/siamsplash5",
             Codeforces = "https://codeforces.com/profile/siamsplash5",
@@ -80,7 +80,7 @@ public class DashboardRepository : IDashboardRepository
         // TODO: Will Introduce Database
         try
         {
-            var weeklySolveCount = 17;
+            int weeklySolveCount = 17;
             return Task.FromResult(weeklySolveCount);
         }
         catch (Exception)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using SolveTracker.Domain.Entities.Common;
+using System.Security.Claims;
 
 namespace SolveTracker.Web.Extensions.Attributes;
 
@@ -11,7 +12,7 @@ public class RoleAuthorizeAttribute(params UserRole[] roles) : Attribute, IAutho
     {
         ArgumentNullException.ThrowIfNull(roles);
 
-        var user = context.HttpContext.User;
+        ClaimsPrincipal user = context.HttpContext.User;
 
         if (user == null || !user.Identity.IsAuthenticated)
         {

@@ -15,8 +15,8 @@ public class TimusService(IWebScrapperService webScrapperService, ILogger<TimusS
             logger.LogInformation("Timus scrapping has started...");
 
             string url = $"{_baseUrl}{judgeId}";
-            var htmlContent = await webScrapperService.GetDynamicHtmlContentAsync(url);
-            var htmlDocument = new HtmlDocument();
+            string htmlContent = await webScrapperService.GetDynamicHtmlContentAsync(url);
+            HtmlDocument htmlDocument = new();
 
             htmlDocument.LoadHtml(htmlContent);
 

@@ -10,7 +10,7 @@ public class DashboardService(IDashboardRepository dashboardRepository) : IDashb
     {
         try
         {
-            var totalSolveCountSummary = await dashboardRepository.GetTotalSolveCountSummaryAsync();
+            SolveCountSummary totalSolveCountSummary = await dashboardRepository.GetTotalSolveCountSummaryAsync();
             totalSolveCountSummary.Total = GetSumOfIntegerProperties<SolveCountSummary>(totalSolveCountSummary);
 
             return totalSolveCountSummary;
@@ -25,7 +25,7 @@ public class DashboardService(IDashboardRepository dashboardRepository) : IDashb
     {
         try
         {
-            var dailySolveCountSummary = await dashboardRepository.GetDailySolveCountSummaryAsync();
+            SolveCountSummary dailySolveCountSummary = await dashboardRepository.GetDailySolveCountSummaryAsync();
             dailySolveCountSummary.Total = GetSumOfIntegerProperties<SolveCountSummary>(dailySolveCountSummary);
             return dailySolveCountSummary;
         }
@@ -39,7 +39,7 @@ public class DashboardService(IDashboardRepository dashboardRepository) : IDashb
     {
         try
         {
-            var onlineJudgeHandle = await dashboardRepository.GetOnlineJudgeHandleAsync();
+            OnlineJudgeHandle onlineJudgeHandle = await dashboardRepository.GetOnlineJudgeHandleAsync();
             return onlineJudgeHandle;
         }
         catch (Exception)
@@ -52,7 +52,7 @@ public class DashboardService(IDashboardRepository dashboardRepository) : IDashb
     {
         try
         {
-            var onlineJudgeProfileLink = dashboardRepository.GetOnlineJudgeProfileLinkAsync();
+            Task<OnlineJudgeProfileLink> onlineJudgeProfileLink = dashboardRepository.GetOnlineJudgeProfileLinkAsync();
             return onlineJudgeProfileLink;
         }
         catch (Exception)
@@ -65,7 +65,7 @@ public class DashboardService(IDashboardRepository dashboardRepository) : IDashb
     {
         try
         {
-            var weeklySolveCount = dashboardRepository.GetWeeklySolveCountAsync();
+            Task<int> weeklySolveCount = dashboardRepository.GetWeeklySolveCountAsync();
             return weeklySolveCount;
         }
         catch (Exception)

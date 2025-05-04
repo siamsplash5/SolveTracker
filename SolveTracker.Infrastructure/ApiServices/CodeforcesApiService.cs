@@ -14,11 +14,12 @@ public class CodeforcesApiService(ILogger<CodeforcesApiService> logger) : ICodef
         {
             logger.LogInformation("Codeforces API call has started...");
 
-            var url = $"{_baseAPIUrl}{username}";
-            using var httpClient = new HttpClient();
-            var jsonResponse = await httpClient.GetStringAsync(url);
-            var response = JsonSerializer.Deserialize<JsonElement>(jsonResponse);
-            var submissions = response.GetProperty("result").EnumerateArray().ToList();
+            string url = $"{_baseAPIUrl}{username}";
+            using HttpClient httpClient = new();
+            string jsonResponse = await httpClient.GetStringAsync(url);
+            JsonElement response = JsonSerializer.Deserialize<JsonElement>(jsonResponse);
+
+            List<JsonElement> submissions = [.. response.GetProperty("result").EnumerateArray()];
             // Div 1 + Div 2 solve count (if same problem solved from 2 div)
             int count = submissions.Count(submission => submission.GetProperty("verdict").ToString() == "OK");
 

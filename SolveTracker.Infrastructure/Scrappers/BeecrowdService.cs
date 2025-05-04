@@ -15,8 +15,8 @@ public class BeecrowdService(IWebScrapperService webScrapperService, ILogger<Bee
             logger.LogInformation("Beecrowd scrapping has started...");
 
             string url = $"{_baseUrl}{userId}";
-            var htmlContent = await webScrapperService.GetDynamicHtmlContentAsync(url);
-            var htmlDocument = new HtmlDocument();
+            string htmlContent = await webScrapperService.GetDynamicHtmlContentAsync(url);
+            HtmlDocument htmlDocument = new();
 
             htmlDocument.LoadHtml(htmlContent);
 

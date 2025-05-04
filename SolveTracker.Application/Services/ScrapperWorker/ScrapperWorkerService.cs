@@ -16,13 +16,13 @@ public class ScrapperWorkerService(
     ITimusService timusService,
     ITophService tophService,
     IUvaApiService uvaService,
-    IDashboardRepository dashboardRepository): IScrapperWorkerService
+    IDashboardRepository dashboardRepository) : IScrapperWorkerService
 {
     public async Task<SolveCountSummary> GetSolveCountAsync()
     {
-        var onlineJudgeHandle = await dashboardRepository.GetOnlineJudgeHandleAsync();
-        var solveCountSummary = new SolveCountSummary();
-        var tasks = new Dictionary<Func<Task<int>>, Action<int>>
+        OnlineJudgeHandle onlineJudgeHandle = await dashboardRepository.GetOnlineJudgeHandleAsync();
+        SolveCountSummary solveCountSummary = new();
+        Dictionary<Func<Task<int>>, Action<int>> tasks = new()
         {
             { () => atCoderService.GetSolveCountByAPIAsync(onlineJudgeHandle.AtCoder), result => solveCountSummary.AtCoder = result },
             { () => codechefService.GetSolveCountByScrappingAsync(onlineJudgeHandle.CodeChef), result => solveCountSummary.CodeChef = result },
@@ -35,15 +35,15 @@ public class ScrapperWorkerService(
             { () => uvaService.GetSolveCountByAPIAsync(onlineJudgeHandle.Uva), result => solveCountSummary.Uva = result }
         };
 
-        var stopwatch = new Stopwatch();
+        Stopwatch stopwatch = new();
 
         StartStopWatch(stopwatch);
-        var results = await Task.WhenAll(tasks.Keys.Select(taskFunc => taskFunc()));
+        int[] results = await Task.WhenAll(tasks.Keys.Select(taskFunc => taskFunc()));
         StopAndLogStopWatch(stopwatch);
 
         int index = 0;
 
-        foreach (var setResult in tasks.Values)
+        foreach (Action<int> setResult in tasks.Values)
         {
             setResult(results[index]);
             index++;
